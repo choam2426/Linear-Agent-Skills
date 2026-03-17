@@ -1,0 +1,19 @@
+{
+  "name": "claude-linear-skills",
+  "version": "1.0.0",
+  "description": "30 Claude Code skills that replace the Linear MCP server with native GraphQL API calls. No OAuth or MCP configuration required.",
+  "author": {
+    "name": "choam2426",
+    "email": "choam2426@gmail.com"
+  },
+  "homepage": "https://github.com/choam2426/Linear-Agent-Skills",
+  "repository": "https://github.com/choam2426/Linear-Agent-Skills",
+  "license": "MIT",
+  "keywords": [
+    "linear",
+    "project-management",
+    "issue-tracking",
+    "graphql",
+    "productivity"
+  ]
+}

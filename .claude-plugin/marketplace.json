@@ -1,0 +1,32 @@
+{
+  "name": "claude-linear-skills",
+  "owner": {
+    "name": "choam2426",
+    "email": "choam2426@gmail.com"
+  },
+  "metadata": {
+    "description": "Linear integration skills for Claude Code — replace MCP with native GraphQL API calls",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "claude-linear-skills",
+      "source": "./plugins/claude",
+      "description": "30 skills covering all Linear operations: issues, projects, documents, teams, users, comments, cycles, milestones, labels, and attachments.",
+      "version": "1.0.0",
+      "license": "MIT",
+      "author": {
+        "name": "choam2426",
+        "email": "choam2426@gmail.com"
+      },
+      "category": "productivity",
+      "tags": [
+        "linear",
+        "issue-tracking",
+        "project-management",
+        "graphql",
+        "no-mcp"
+      ]
+    }
+  ]
+}
