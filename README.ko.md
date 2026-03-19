@@ -31,26 +31,26 @@ Linear API 전체를 하나의 Python 스크립트로 래핑한, AI Agent에 최
 먼저 마켓플레이스를 등록합니다:
 
 ```
-/plugin marketplace add choam2426/claude-linear-skills
+/plugin marketplace add choam2426/Linear-Agent-Skills
 ```
 
 그런 다음 플러그인을 설치합니다:
 
 ```
-/plugin install claude-linear-skills@claude-linear-skills
+/plugin install Linear-Agent-Skills@Linear-Agent-Skills
 ```
 
 설치 범위를 지정할 수도 있습니다:
 
 ```bash
 # 사용자 범위 (기본값, 모든 프로젝트에서 사용)
-claude plugin install claude-linear-skills@claude-linear-skills
+claude plugin install Linear-Agent-Skills@Linear-Agent-Skills
 
 # 프로젝트 범위 (팀원과 공유, 버전 관리에 포함)
-claude plugin install claude-linear-skills@claude-linear-skills --scope project
+claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope project
 
 # 로컬 범위 (gitignore 처리, 나만 사용)
-claude plugin install claude-linear-skills@claude-linear-skills --scope local
+claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope local
 ```
 
 ### 방법 2: 로컬에서 직접 실행 (Claude Code)

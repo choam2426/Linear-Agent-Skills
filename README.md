@@ -31,26 +31,26 @@ Works with any AI coding agent: [Claude Code](https://claude.com/claude-code), [
 First, register the marketplace:
 
 ```
-/plugin marketplace add choam2426/claude-linear-skills
+/plugin marketplace add choam2426/Linear-Agent-Skills
 ```
 
 Then install the plugin:
 
 ```
-/plugin install claude-linear-skills@claude-linear-skills
+/plugin install Linear-Agent-Skills@Linear-Agent-Skills
 ```
 
 You can also specify the installation scope:
 
 ```bash
 # User scope (default, available across all projects)
-claude plugin install claude-linear-skills@claude-linear-skills
+claude plugin install Linear-Agent-Skills@Linear-Agent-Skills
 
 # Project scope (shared with team, included in version control)
-claude plugin install claude-linear-skills@claude-linear-skills --scope project
+claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope project
 
 # Local scope (gitignored, only for you)
-claude plugin install claude-linear-skills@claude-linear-skills --scope local
+claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope local
 ```
 
 ### Option 2: Run locally (Claude Code)

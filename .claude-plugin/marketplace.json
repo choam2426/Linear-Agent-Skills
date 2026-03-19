@@ -1,5 +1,5 @@
 {
-  "name": "claude-linear-skills",
+  "name": "Linear-Agent-Skills",
   "owner": {
     "name": "choam2426",
     "email": "choam2426@gmail.com"
@@ -10,7 +10,7 @@
   },
   "plugins": [
     {
-      "name": "claude-linear-skills",
+      "name": "Linear-Agent-Skills",
       "source": "./plugins/claude",
       "description": "Agent-optimized CLI with 32 subcommands covering all Linear operations: issues, projects, documents, teams, users, comments, cycles, milestones, labels, attachments, file upload/download.",
       "version": "2.0.0",
