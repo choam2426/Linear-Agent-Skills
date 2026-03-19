@@ -1,12 +1,15 @@
-# Claude Linear Skills
+# Linear Agent Skills
 
-A [Claude Code](https://claude.com/claude-code) plugin that provides a Linear CLI tool with 32 subcommands. No OAuth or MCP configuration required — just a Linear API key.
+An agent-optimized CLI that wraps the entire Linear API into a single Python script — no OAuth, no MCP, no dependencies.
+
+Works with any AI coding agent: [Claude Code](https://claude.com/claude-code), [Cursor](https://cursor.com), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [Windsurf](https://windsurf.com), or any tool that can run shell commands.
 
 ## Why use this instead of the Linear MCP server?
 
 - **No OAuth flow** — works with a simple API key
 - **No MCP dependency** — runs as a single Python script, no extra servers
-- **Token efficient** — even with tool search, MCP requires a round-trip to fetch each tool's schema before calling it. SKILL.md puts all 32 commands in context at once (~500 tokens), and outputs compact JSON by default.
+- **Works with any AI agent** — not locked to a specific tool. Any agent that can run a shell command can use this.
+- **Token efficient** — SKILL.md puts all 32 commands in context at once (~500 tokens), and outputs compact JSON by default.
 - **File upload & download** — upload local files and download files from issue descriptions/comments. The Linear MCP server has no file handling capabilities.
 - **Cross-platform** — works on Windows/macOS/Linux
 
@@ -50,7 +53,7 @@ claude plugin install claude-linear-skills@claude-linear-skills --scope project
 claude plugin install claude-linear-skills@claude-linear-skills --scope local
 ```
 
-### Option 2: Run locally
+### Option 2: Run locally (Claude Code)
 
 Clone the repo and point Claude Code to the plugin directory:
 
@@ -59,12 +62,21 @@ git clone https://github.com/choam2426/Linear-Agent-Skills.git
 claude --plugin-dir ./Linear-Agent-Skills
 ```
 
-### Option 3: Manual copy
+### Option 3: Manual copy (works with any AI agent)
 
-Copy the skills directory directly into your project:
+Copy the skills directory into your project. Any AI agent that can run shell commands can use it directly:
 
 ```bash
-cp -r plugins/claude/skills/ /path/to/your/project/.claude/skills/
+git clone https://github.com/choam2426/Linear-Agent-Skills.git
+cp -r Linear-Agent-Skills/plugins/claude/skills/ /path/to/your/project/.claude/skills/
+```
+
+For **Cursor / Windsurf**, add the CLI path and SKILL.md reference to your rules file.
+For **Gemini CLI**, include the SKILL.md content in your system instructions or GEMINI.md.
+
+The CLI itself is a standalone Python script — just run:
+```bash
+python scripts/linear_cli.py <command> [flags]
 ```
 
 ### Set up your API key
@@ -79,7 +91,7 @@ Generate a key at **Linear > Settings > API > Personal API keys**.
 
 ### Verify installation
 
-Once installed, Claude Code will automatically discover the CLI. Try asking:
+Once installed, your AI agent will discover the CLI. Try asking:
 
 - "List my Linear teams"
 - "Show issues assigned to me"

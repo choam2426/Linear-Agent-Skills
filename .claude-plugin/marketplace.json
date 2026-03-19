@@ -5,14 +5,14 @@
     "email": "choam2426@gmail.com"
   },
   "metadata": {
-    "description": "Linear CLI for Claude Code — manage your Linear workspace with a single CLI tool, no MCP required",
+    "description": "Agent-optimized Linear CLI — works with Claude Code, Cursor, Gemini CLI, and any AI agent. No OAuth or MCP required.",
     "version": "2.0.0"
   },
   "plugins": [
     {
       "name": "claude-linear-skills",
       "source": "./plugins/claude",
-      "description": "CLI tool with 31 subcommands covering all Linear operations: issues, projects, documents, teams, users, comments, cycles, milestones, labels, attachments, and file downloads.",
+      "description": "Agent-optimized CLI with 32 subcommands covering all Linear operations: issues, projects, documents, teams, users, comments, cycles, milestones, labels, attachments, file upload/download.",
       "version": "2.0.0",
       "license": "MIT",
       "author": {

@@ -1,7 +1,7 @@
 {
   "name": "claude-linear-skills",
   "version": "2.0.0",
-  "description": "Linear CLI for Claude Code — manage issues, projects, documents, teams, and more with a single CLI tool. No OAuth or MCP required.",
+  "description": "Agent-optimized Linear CLI — manage issues, projects, documents, teams, and more with a single Python script. Works with Claude Code, Cursor, Gemini CLI, and any AI agent. No OAuth or MCP required.",
   "author": {
     "name": "choam2426",
     "email": "choam2426@gmail.com"

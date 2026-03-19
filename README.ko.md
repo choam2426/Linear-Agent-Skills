@@ -1,12 +1,15 @@
-# Claude Linear Skills
+# Linear Agent Skills
 
-32개 서브커맨드를 제공하는 Linear CLI [Claude Code](https://claude.com/claude-code) 플러그인입니다. OAuth나 MCP 설정 없이 Linear API 키만 있으면 됩니다.
+Linear API 전체를 하나의 Python 스크립트로 래핑한, AI Agent에 최적화된 CLI입니다. OAuth, MCP, 외부 의존성 없이 동작합니다.
+
+모든 AI 코딩 에이전트에서 사용 가능: [Claude Code](https://claude.com/claude-code), [Cursor](https://cursor.com), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [Windsurf](https://windsurf.com), 또는 셸 명령을 실행할 수 있는 어떤 도구든.
 
 ## Linear MCP 서버 대신 이걸 쓰는 이유
 
 - **OAuth 불필요** — 간단한 API 키만으로 동작
 - **MCP 의존성 없음** — 단일 Python 스크립트로 실행, 별도 서버 불필요
-- **토큰 효율적** — tool search가 있어도 MCP는 호출마다 tool schema를 fetch하는 왕복이 필요. SKILL.md는 32개 커맨드를 ~500 토큰으로 한번에 제공하고, 기본 출력이 compact JSON.
+- **어떤 AI Agent에서든 동작** — 특정 도구에 종속되지 않음. 셸 명령을 실행할 수 있는 Agent라면 바로 사용 가능.
+- **토큰 효율적** — SKILL.md가 32개 커맨드를 ~500 토큰으로 한번에 제공하고, 기본 출력이 compact JSON.
 - **파일 업로드 & 다운로드** — 로컬 파일 업로드 및 이슈 설명/댓글의 파일 다운로드 가능. Linear MCP 서버에는 파일 처리 기능이 없음.
 - **크로스플랫폼** — Windows/macOS/Linux 지원
 
@@ -50,7 +53,7 @@ claude plugin install claude-linear-skills@claude-linear-skills --scope project
 claude plugin install claude-linear-skills@claude-linear-skills --scope local
 ```
 
-### 방법 2: 로컬에서 직접 실행
+### 방법 2: 로컬에서 직접 실행 (Claude Code)
 
 저장소를 클론한 뒤 플러그인 디렉토리를 지정하여 실행합니다:
 
@@ -59,12 +62,21 @@ git clone https://github.com/choam2426/Linear-Agent-Skills.git
 claude --plugin-dir ./Linear-Agent-Skills
 ```
 
-### 방법 3: 수동 복사
+### 방법 3: 수동 복사 (모든 AI Agent에서 사용 가능)
 
-스킬 디렉토리를 프로젝트에 직접 복사합니다:
+스킬 디렉토리를 프로젝트에 복사합니다. 셸 명령을 실행할 수 있는 AI Agent라면 바로 사용 가능합니다:
 
 ```bash
-cp -r plugins/claude/skills/ /path/to/your/project/.claude/skills/
+git clone https://github.com/choam2426/Linear-Agent-Skills.git
+cp -r Linear-Agent-Skills/plugins/claude/skills/ /path/to/your/project/.claude/skills/
+```
+
+**Cursor / Windsurf**의 경우, rules 파일에 CLI 경로와 SKILL.md 참조를 추가하세요.
+**Gemini CLI**의 경우, 시스템 지시사항이나 GEMINI.md에 SKILL.md 내용을 포함하세요.
+
+CLI 자체는 독립 실행 가능한 Python 스크립트입니다:
+```bash
+python scripts/linear_cli.py <command> [flags]
 ```
 
 ### API 키 설정
@@ -79,7 +91,7 @@ LINEAR_API_KEY=lin_api_your_key_here
 
 ### 설치 확인
 
-설치가 완료되면 Claude Code가 자동으로 CLI를 인식합니다. 다음과 같이 사용해 보세요:
+설치가 완료되면 AI Agent가 CLI를 인식합니다. 다음과 같이 사용해 보세요:
 
 - "Linear 팀 목록 보여줘"
 - "나에게 할당된 이슈 보여줘"
