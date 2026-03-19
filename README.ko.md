@@ -1,13 +1,25 @@
 # Claude Linear Skills
 
-Linear MCP 서버를 네이티브 GraphQL API 호출로 대체하는 [Claude Code](https://claude.com/claude-code) 스킬 모음입니다. OAuth나 MCP 설정 없이 Linear API 키만 있으면 됩니다.
+32개 서브커맨드를 제공하는 Linear CLI [Claude Code](https://claude.com/claude-code) 플러그인입니다. OAuth나 MCP 설정 없이 Linear API 키만 있으면 됩니다.
 
 ## Linear MCP 서버 대신 이걸 쓰는 이유
 
 - **OAuth 불필요** — 간단한 API 키만으로 동작
-- **MCP 의존성 없음** — 순수 Python으로 실행, 별도 서버 불필요
-- **완전한 커버리지** — Linear MCP 도구 전체를 대체하는 30개 스킬
-- **커스터마이징 가능** — 워크플로에 맞게 GraphQL 쿼리를 자유롭게 수정
+- **MCP 의존성 없음** — 단일 Python 스크립트로 실행, 별도 서버 불필요
+- **토큰 효율적** — tool search가 있어도 MCP는 호출마다 tool schema를 fetch하는 왕복이 필요. SKILL.md는 32개 커맨드를 ~500 토큰으로 한번에 제공하고, 기본 출력이 compact JSON.
+- **파일 업로드 & 다운로드** — 로컬 파일 업로드 및 이슈 설명/댓글의 파일 다운로드 가능. Linear MCP 서버에는 파일 처리 기능이 없음.
+- **크로스플랫폼** — Windows/macOS/Linux 지원
+
+### Linear MCP 서버와 비교
+
+| | Linear MCP 서버 | 이 플러그인 |
+|---|---|---|
+| 설정 | OAuth flow + MCP 서버 프로세스 | `.env`에 API 키 |
+| 토큰 비용 (10회 호출, 5개 tool) | ~4,150 tok | ~2,300 tok (~45% 절감) |
+| 파일 업로드 | 미지원 | `upload-file` → asset URL 반환 |
+| 파일 다운로드 | 미지원 | `download-file`로 설명/댓글 파일 다운로드 |
+| 출력 형식 | Verbose JSON | Compact JSON (~40% 절감) |
+| 의존성 | MCP 런타임 | Python 표준 라이브러리만 |
 
 ## 설치
 
@@ -43,8 +55,8 @@ claude plugin install claude-linear-skills@claude-linear-skills --scope local
 저장소를 클론한 뒤 플러그인 디렉토리를 지정하여 실행합니다:
 
 ```bash
-git clone https://github.com/choam/claude-linear-skills.git
-claude --plugin-dir ./claude-linear-skills
+git clone https://github.com/choam2426/Linear-Agent-Skills.git
+claude --plugin-dir ./Linear-Agent-Skills
 ```
 
 ### 방법 3: 수동 복사
@@ -52,12 +64,12 @@ claude --plugin-dir ./claude-linear-skills
 스킬 디렉토리를 프로젝트에 직접 복사합니다:
 
 ```bash
-cp -r skills/ /path/to/your/project/skills/
+cp -r plugins/claude/skills/ /path/to/your/project/.claude/skills/
 ```
 
 ### API 키 설정
 
-설치 방법과 관계없이 Linear API 키가 필요합니다. 프로젝트 루트에 `.env` 파일을 생성하세요:
+프로젝트 루트에 `.env` 파일을 생성하세요:
 
 ```
 LINEAR_API_KEY=lin_api_your_key_here
@@ -67,7 +79,7 @@ LINEAR_API_KEY=lin_api_your_key_here
 
 ### 설치 확인
 
-설치가 완료되면 Claude Code가 자동으로 스킬을 인식합니다. 다음과 같이 사용해 보세요:
+설치가 완료되면 Claude Code가 자동으로 CLI를 인식합니다. 다음과 같이 사용해 보세요:
 
 - "Linear 팀 목록 보여줘"
 - "나에게 할당된 이슈 보여줘"
@@ -78,107 +90,98 @@ LINEAR_API_KEY=lin_api_your_key_here
 - Python 3.7+
 - 외부 의존성 없음 (Python 표준 라이브러리만 사용)
 
-## 스킬 레퍼런스
-
-### 기본 도구
-
-| 스킬 | 설명 |
-|------|------|
-| `linear-api` | 기본 GraphQL API 도구. 다른 모든 스킬이 이 스크립트를 사용합니다. |
+## CLI 레퍼런스
 
 ### 이슈
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-get-issue` | 식별자(예: SCE-1) 또는 UUID로 이슈 상세 조회 |
-| `linear-list-issues` | 팀, 상태, 담당자, 라벨 등으로 이슈 검색/필터 |
-| `linear-create-issue` | 새 이슈 생성 |
-| `linear-update-issue` | 기존 이슈 수정 |
+| 커맨드 | 설명 |
+|--------|------|
+| `get-issue` | 식별자(예: PRJ-42) 또는 UUID로 이슈 상세 조회 |
+| `list-issues` | 팀, 상태, 담당자, 라벨, 프로젝트, 우선순위로 이슈 검색/필터 |
+| `create-issue` | 새 이슈 생성 |
+| `update-issue` | 기존 이슈 수정 |
 
 ### 문서
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-get-document` | ID 또는 슬러그로 문서 상세 조회 |
-| `linear-list-documents` | 문서 목록 조회 (프로젝트별 필터 가능) |
-| `linear-create-document` | 새 문서 생성 |
-| `linear-update-document` | 기존 문서 수정 |
+| 커맨드 | 설명 |
+|--------|------|
+| `get-document` | ID로 문서 상세 조회 |
+| `list-documents` | 전체 문서 목록 조회 |
+| `create-document` | 새 문서 생성 (프로젝트, 이슈, 또는 팀 ID 필수) |
+| `update-document` | 기존 문서 수정 |
 
 ### 프로젝트
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-get-project` | 이름, ID, 슬러그로 프로젝트 상세 조회 |
-| `linear-list-projects` | 팀, 상태, 라벨 등으로 프로젝트 목록/필터 |
-| `linear-save-project` | 프로젝트 생성 또는 수정 |
+| 커맨드 | 설명 |
+|--------|------|
+| `get-project` | 이름 또는 ID로 프로젝트 상세 조회 |
+| `list-projects` | 팀, 상태, 리드로 프로젝트 목록/필터 |
+| `save-project` | 프로젝트 생성 또는 수정 |
 
 ### 팀
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-get-team` | 이름, 키, UUID로 팀 상세 조회 |
-| `linear-list-teams` | 전체 팀 및 워크플로 상태 목록 조회 |
+| 커맨드 | 설명 |
+|--------|------|
+| `get-team` | 멤버, 상태, 라벨 포함 팀 상세 조회 |
+| `list-teams` | 전체 팀 및 워크플로 상태 목록 조회 |
 
 ### 사용자
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-get-user` | 이름, 이메일, ID, "me"로 사용자 상세 조회 |
-| `linear-list-users` | 워크스페이스 사용자 목록 조회 (이름/이메일 검색) |
+| 커맨드 | 설명 |
+|--------|------|
+| `get-user` | 이름, 이메일, ID, `--me`로 사용자 상세 조회 |
+| `list-users` | 워크스페이스 사용자 목록 조회 (이름/이메일 검색) |
 
 ### 댓글
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-list-comments` | 이슈의 댓글 목록 조회 |
-| `linear-save-comment` | 댓글 생성 또는 수정 |
-| `linear-delete-comment` | 댓글 삭제 |
+| 커맨드 | 설명 |
+|--------|------|
+| `list-comments` | 이슈의 댓글 목록 조회 |
+| `save-comment` | 댓글 생성 또는 수정 |
+| `delete-comment` | 댓글 삭제 |
 
 ### 라벨
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-list-issue-labels` | 이슈 라벨 목록 조회 (워크스페이스 또는 팀) |
-| `linear-create-issue-label` | 새 이슈 라벨 생성 |
-| `linear-list-project-labels` | 프로젝트 라벨 목록 조회 |
+| 커맨드 | 설명 |
+|--------|------|
+| `list-issue-labels` | 이슈 라벨 목록 조회 (워크스페이스 또는 팀) |
+| `create-issue-label` | 새 이슈 라벨 생성 |
+| `list-project-labels` | 프로젝트 라벨 목록 조회 |
 
 ### 워크플로
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-get-issue-status` | ID 또는 팀으로 워크플로 상태 조회 |
-| `linear-list-issue-statuses` | 팀의 전체 워크플로 상태 목록 조회 |
-| `linear-list-cycles` | 팀의 사이클(스프린트) 목록 조회 |
+| 커맨드 | 설명 |
+|--------|------|
+| `get-issue-status` | ID 또는 팀으로 워크플로 상태 조회 |
+| `list-issue-statuses` | 팀의 전체 워크플로 상태 목록 조회 |
+| `list-cycles` | 팀의 사이클(스프린트) 목록 조회 |
 
 ### 마일스톤
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-get-milestone` | ID 또는 프로젝트로 마일스톤 조회 |
-| `linear-list-milestones` | 프로젝트의 마일스톤 목록 조회 |
-| `linear-save-milestone` | 마일스톤 생성 또는 수정 |
+| 커맨드 | 설명 |
+|--------|------|
+| `get-milestone` | ID 또는 프로젝트로 마일스톤 조회 |
+| `list-milestones` | 프로젝트의 마일스톤 목록 조회 |
+| `save-milestone` | 마일스톤 생성 또는 수정 |
 
-### 첨부파일
+### 첨부파일 & 파일
 
-| 스킬 | 설명 |
-|------|------|
-| `linear-get-attachment` | ID로 첨부파일 상세 조회 |
-| `linear-create-attachment` | 이슈에 URL 첨부파일 추가 |
-| `linear-delete-attachment` | 첨부파일 삭제 |
+| 커맨드 | 설명 |
+|--------|------|
+| `get-attachment` | ID로 첨부파일 상세 조회 |
+| `create-attachment` | 이슈에 URL 첨부파일 추가 |
+| `delete-attachment` | 첨부파일 삭제 |
+| `upload-file` | 로컬 파일 업로드, 설명/댓글에 사용할 asset URL 반환 |
+| `download-file` | 이슈 설명/댓글에 업로드된 파일 다운로드 (uploads.linear.app) |
 
 ## 프로젝트 구조
 
 ```
-skills/
-├── linear-api/          # 기본 도구 (GraphQL API 스크립트)
-│   ├── SKILL.md
-│   └── scripts/
-│       └── linear_api.py
-├── linear-get-issue/    # 각 스킬은 고유 디렉토리를 가짐
-│   └── SKILL.md
-├── linear-list-issues/
-│   └── SKILL.md
-└── ...                  # 30개 이상의 스킬
+plugins/claude/skills/
+└── linear-cli/
+    ├── SKILL.md          # Claude Code용 CLI 레퍼런스
+    └── scripts/
+        └── linear_cli.py # CLI 구현
 ```
 
 ## 라이선스

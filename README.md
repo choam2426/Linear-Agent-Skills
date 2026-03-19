@@ -1,13 +1,25 @@
 # Claude Linear Skills
 
-A collection of [Claude Code](https://claude.com/claude-code) skills that replace the Linear MCP server with native GraphQL API calls. No OAuth or MCP configuration required — just a Linear API key.
+A [Claude Code](https://claude.com/claude-code) plugin that provides a Linear CLI tool with 32 subcommands. No OAuth or MCP configuration required — just a Linear API key.
 
 ## Why use this instead of the Linear MCP server?
 
 - **No OAuth flow** — works with a simple API key
-- **No MCP dependency** — runs as plain Python, no extra servers
-- **Full coverage** — 30 skills covering all Linear MCP tools
-- **Customizable** — edit any skill's GraphQL query to fit your workflow
+- **No MCP dependency** — runs as a single Python script, no extra servers
+- **Token efficient** — even with tool search, MCP requires a round-trip to fetch each tool's schema before calling it. SKILL.md puts all 32 commands in context at once (~500 tokens), and outputs compact JSON by default.
+- **File upload & download** — upload local files and download files from issue descriptions/comments. The Linear MCP server has no file handling capabilities.
+- **Cross-platform** — works on Windows/macOS/Linux
+
+### Comparison with Linear MCP server
+
+| | Linear MCP server | This plugin |
+|---|---|---|
+| Setup | OAuth flow + MCP server process | API key in `.env` |
+| Token cost (10 calls, 5 tools) | ~4,150 tok | ~2,300 tok (~45% less) |
+| File upload | Not supported | `upload-file` → returns asset URL |
+| File download | Not supported | `download-file` from descriptions/comments |
+| Output format | Verbose JSON | Compact JSON (~40% smaller) |
+| Dependencies | MCP runtime | Python standard library only |
 
 ## Installation
 
@@ -43,8 +55,8 @@ claude plugin install claude-linear-skills@claude-linear-skills --scope local
 Clone the repo and point Claude Code to the plugin directory:
 
 ```bash
-git clone https://github.com/choam/claude-linear-skills.git
-claude --plugin-dir ./claude-linear-skills
+git clone https://github.com/choam2426/Linear-Agent-Skills.git
+claude --plugin-dir ./Linear-Agent-Skills
 ```
 
 ### Option 3: Manual copy
@@ -52,22 +64,22 @@ claude --plugin-dir ./claude-linear-skills
 Copy the skills directory directly into your project:
 
 ```bash
-cp -r skills/ /path/to/your/project/skills/
+cp -r plugins/claude/skills/ /path/to/your/project/.claude/skills/
 ```
 
 ### Set up your API key
 
-Regardless of installation method, you need a Linear API key. Create a `.env` file in your project root:
+Create a `.env` file in your project root:
 
 ```
 LINEAR_API_KEY=lin_api_your_key_here
 ```
 
-You can generate a key at **Linear > Settings > API > Personal API keys**.
+Generate a key at **Linear > Settings > API > Personal API keys**.
 
 ### Verify installation
 
-Once installed, Claude Code will automatically discover the skills. Try asking:
+Once installed, Claude Code will automatically discover the CLI. Try asking:
 
 - "List my Linear teams"
 - "Show issues assigned to me"
@@ -78,107 +90,98 @@ Once installed, Claude Code will automatically discover the skills. Try asking:
 - Python 3.7+
 - No external dependencies (uses only Python standard library)
 
-## Skills Reference
-
-### Base Tool
-
-| Skill | Description |
-|-------|-------------|
-| `linear-api` | Base GraphQL API tool. All other skills use this script. |
+## CLI Reference
 
 ### Issues
 
-| Skill | Description |
-|-------|-------------|
-| `linear-get-issue` | Get issue details by identifier (e.g., SCE-1) or UUID |
-| `linear-list-issues` | Search/filter issues by team, state, assignee, label, etc. |
-| `linear-create-issue` | Create a new issue |
-| `linear-update-issue` | Update an existing issue |
+| Command | Description |
+|---------|-------------|
+| `get-issue` | Get issue details by identifier (e.g., PRJ-42) or UUID |
+| `list-issues` | Search/filter issues by team, state, assignee, label, project, priority |
+| `create-issue` | Create a new issue |
+| `update-issue` | Update an existing issue |
 
 ### Documents
 
-| Skill | Description |
-|-------|-------------|
-| `linear-get-document` | Get document details by ID or slug |
-| `linear-list-documents` | List documents, optionally filtered by project |
-| `linear-create-document` | Create a new document |
-| `linear-update-document` | Update an existing document |
+| Command | Description |
+|---------|-------------|
+| `get-document` | Get document details by ID |
+| `list-documents` | List all documents |
+| `create-document` | Create a new document (requires project, issue, or team ID) |
+| `update-document` | Update an existing document |
 
 ### Projects
 
-| Skill | Description |
-|-------|-------------|
-| `linear-get-project` | Get project details by name, ID, or slug |
-| `linear-list-projects` | List/filter projects by team, state, label, etc. |
-| `linear-save-project` | Create or update a project |
+| Command | Description |
+|---------|-------------|
+| `get-project` | Get project details by name or ID |
+| `list-projects` | List/filter projects by team, state, lead |
+| `save-project` | Create or update a project |
 
 ### Teams
 
-| Skill | Description |
-|-------|-------------|
-| `linear-get-team` | Get team details by name, key, or UUID |
-| `linear-list-teams` | List all teams and their workflow states |
+| Command | Description |
+|---------|-------------|
+| `get-team` | Get team details with members, states, labels |
+| `list-teams` | List all teams and their workflow states |
 
 ### Users
 
-| Skill | Description |
-|-------|-------------|
-| `linear-get-user` | Get user details by name, email, ID, or "me" |
-| `linear-list-users` | List workspace users, search by name/email |
+| Command | Description |
+|---------|-------------|
+| `get-user` | Get user details by name, email, ID, or `--me` |
+| `list-users` | List workspace users, search by name/email |
 
 ### Comments
 
-| Skill | Description |
-|-------|-------------|
-| `linear-list-comments` | List comments on an issue |
-| `linear-save-comment` | Create or update a comment |
-| `linear-delete-comment` | Delete a comment |
+| Command | Description |
+|---------|-------------|
+| `list-comments` | List comments on an issue |
+| `save-comment` | Create or update a comment |
+| `delete-comment` | Delete a comment |
 
 ### Labels
 
-| Skill | Description |
-|-------|-------------|
-| `linear-list-issue-labels` | List issue labels (workspace or team) |
-| `linear-create-issue-label` | Create a new issue label |
-| `linear-list-project-labels` | List project labels |
+| Command | Description |
+|---------|-------------|
+| `list-issue-labels` | List issue labels (workspace or team) |
+| `create-issue-label` | Create a new issue label |
+| `list-project-labels` | List project labels |
 
 ### Workflow
 
-| Skill | Description |
-|-------|-------------|
-| `linear-get-issue-status` | Get a workflow state by ID or team |
-| `linear-list-issue-statuses` | List all workflow states for a team |
-| `linear-list-cycles` | List cycles (sprints) for a team |
+| Command | Description |
+|---------|-------------|
+| `get-issue-status` | Get a workflow state by ID or team |
+| `list-issue-statuses` | List all workflow states for a team |
+| `list-cycles` | List cycles (sprints) for a team |
 
 ### Milestones
 
-| Skill | Description |
-|-------|-------------|
-| `linear-get-milestone` | Get a milestone by ID or project |
-| `linear-list-milestones` | List milestones in a project |
-| `linear-save-milestone` | Create or update a milestone |
+| Command | Description |
+|---------|-------------|
+| `get-milestone` | Get a milestone by ID or project |
+| `list-milestones` | List milestones in a project |
+| `save-milestone` | Create or update a milestone |
 
-### Attachments
+### Attachments & Files
 
-| Skill | Description |
-|-------|-------------|
-| `linear-get-attachment` | Get attachment details by ID |
-| `linear-create-attachment` | Add a URL attachment to an issue |
-| `linear-delete-attachment` | Delete an attachment |
+| Command | Description |
+|---------|-------------|
+| `get-attachment` | Get attachment details by ID |
+| `create-attachment` | Add a URL attachment to an issue |
+| `delete-attachment` | Delete an attachment |
+| `upload-file` | Upload a local file, returns asset URL for use in descriptions/comments |
+| `download-file` | Download files uploaded in descriptions/comments (uploads.linear.app) |
 
 ## Project Structure
 
 ```
-skills/
-├── linear-api/          # Base tool (GraphQL API script)
-│   ├── SKILL.md
-│   └── scripts/
-│       └── linear_api.py
-├── linear-get-issue/    # Each skill has its own directory
-│   └── SKILL.md
-├── linear-list-issues/
-│   └── SKILL.md
-└── ...                  # 30 more skills
+plugins/claude/skills/
+└── linear-cli/
+    ├── SKILL.md          # CLI reference for Claude Code
+    └── scripts/
+        └── linear_cli.py # CLI implementation
 ```
 
 ## License
