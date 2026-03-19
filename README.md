@@ -31,7 +31,7 @@ Works with any AI coding agent: [Claude Code](https://claude.com/claude-code), [
 First, register the marketplace:
 
 ```
-/plugin marketplace add choam/claude-linear-skills
+/plugin marketplace add choam2426/claude-linear-skills
 ```
 
 Then install the plugin:

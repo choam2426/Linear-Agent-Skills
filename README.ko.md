@@ -31,7 +31,7 @@ Linear API 전체를 하나의 Python 스크립트로 래핑한, AI Agent에 최
 먼저 마켓플레이스를 등록합니다:
 
 ```
-/plugin marketplace add choam/claude-linear-skills
+/plugin marketplace add choam2426/claude-linear-skills
 ```
 
 그런 다음 플러그인을 설치합니다:
