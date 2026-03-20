@@ -9,7 +9,7 @@ Works with any AI coding agent: [Claude Code](https://claude.com/claude-code), [
 - **No OAuth flow** — works with a simple API key
 - **No MCP dependency** — runs as a single Python script, no extra servers
 - **Works with any AI agent** — not locked to a specific tool. Any agent that can run a shell command can use this.
-- **Token efficient** — SKILL.md puts all 32 commands in context at once (~500 tokens), and outputs compact JSON by default.
+- **Token efficient** — SKILL.md puts all 34 commands in context at once (~500 tokens), and outputs compact JSON by default.
 - **File upload & download** — upload local files and download files from issue descriptions/comments. The Linear MCP server has no file handling capabilities.
 - **Cross-platform** — works on Windows/macOS/Linux
 
@@ -166,6 +166,8 @@ Once installed, your AI agent will discover the CLI. Try asking:
 |---------|-------------|
 | `get-issue-status` | Get a workflow state by ID or team |
 | `list-issue-statuses` | List all workflow states for a team |
+| `save-issue-status` | Create or update a workflow state |
+| `delete-issue-status` | Archive a workflow state |
 | `list-cycles` | List cycles (sprints) for a team |
 
 ### Milestones

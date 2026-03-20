@@ -556,6 +556,33 @@ def cmd_list_issue_statuses(args, api_key):
         handle(graphql_request(query, {"id": args.team}, api_key))
 
 
+def cmd_save_issue_status(args, api_key):
+    inp = parse_json(args.input)
+    if args.id:
+        query = """mutation($id: String!, $input: WorkflowStateUpdateInput!) {
+          workflowStateUpdate(id: $id, input: $input) {
+            success
+            workflowState { id name type color position description team { name key } }
+          }
+        }"""
+        handle(graphql_request(query, {"id": args.id, "input": inp}, api_key))
+    else:
+        query = """mutation($input: WorkflowStateCreateInput!) {
+          workflowStateCreate(input: $input) {
+            success
+            workflowState { id name type color position description team { name key } }
+          }
+        }"""
+        handle(graphql_request(query, {"input": inp}, api_key))
+
+
+def cmd_delete_issue_status(args, api_key):
+    query = """mutation($id: String!) {
+      workflowStateArchive(id: $id) { success }
+    }"""
+    handle(graphql_request(query, {"id": args.id}, api_key))
+
+
 def cmd_list_cycles(args, api_key):
     if args.name:
         query = """query($filter: TeamFilter) {
@@ -887,6 +914,13 @@ def build_parser():
     g.add_argument("--team")
     g.add_argument("--name")
 
+    p = sub.add_parser("save-issue-status")
+    p.add_argument("--id")
+    p.add_argument("--input", required=True)
+
+    p = sub.add_parser("delete-issue-status")
+    p.add_argument("--id", required=True)
+
     p = sub.add_parser("list-cycles")
     g = p.add_mutually_exclusive_group(required=True)
     g.add_argument("--team")
@@ -952,6 +986,8 @@ COMMAND_MAP = {
     "list-project-labels": cmd_list_project_labels,
     "get-issue-status": cmd_get_issue_status,
     "list-issue-statuses": cmd_list_issue_statuses,
+    "save-issue-status": cmd_save_issue_status,
+    "delete-issue-status": cmd_delete_issue_status,
     "list-cycles": cmd_list_cycles,
     "get-milestone": cmd_get_milestone,
     "list-milestones": cmd_list_milestones,

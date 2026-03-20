@@ -47,6 +47,8 @@ list-project-labels
 ### Workflow
 get-issue-status (--id UUID|--team NAME)
 list-issue-statuses (--team UUID|--name NAME)  # --team expects UUID, --name expects team name
+save-issue-status --input JSON [--id UUID]   # create: '{"name":"Review","teamId":"UUID","type":"started","color":"#f0ad4e"}' / update: '{"name":"Renamed"}'
+delete-issue-status --id UUID                # archives the workflow state
 list-cycles (--team UUID|--name NAME)
 
 ### Milestones
@@ -67,5 +69,6 @@ download-file --url URL [--output PATH]  # download files uploaded in descriptio
 - --filter example: `--filter '{"team":{"name":{"eq":"Backend"}},"priority":{"gte":2}}'`
 - Priority: 0=None 1=Urgent 2=High 3=Normal 4=Low
 - Project state: planned|started|paused|completed|canceled
+- Workflow state type: backlog|unstarted|started|completed|canceled
 - Errors: JSON to stderr `{"error":"...","details":...}`
 - Workflow: first call list-teams to get team IDs/names, then use them in other commands.
