@@ -11,9 +11,12 @@ description: Linear workspace CLI — issues, projects, documents, teams, users,
 
 ### Issues
 get-issue --id ID              # ID = identifier (e.g. PRJ-42) or UUID
-list-issues [--team NAME] [--state NAME] [--assignee NAME] [--label NAME] [--project NAME] [--priority INT] [--filter JSON]
-create-issue --title STR --team-id UUID [--description MD] [--priority 0-4] [--assignee-id UUID] [--label-ids csv] [--state-id UUID] [--estimate INT] [--due-date YYYY-MM-DD] [--project-id UUID] [--cycle-id UUID]
+list-issues [--team NAME] [--state NAME] [--assignee NAME] [--label NAME] [--project NAME] [--priority INT] [--parent-id ID] [--filter JSON]
+create-issue --title STR --team-id UUID [--description MD] [--priority 0-4] [--assignee-id UUID] [--label-ids csv] [--state-id UUID] [--estimate INT] [--due-date YYYY-MM-DD] [--project-id UUID] [--cycle-id UUID] [--parent-id UUID]
 update-issue --id ID --input JSON   # e.g. --input '{"title":"New","priority":2,"stateId":"...","assigneeId":"..."}'
+list-sub-issues --id ID                          # list child issues of a parent issue
+add-sub-issue --parent-id ID --issue-id ID       # link existing issue as sub-issue
+remove-sub-issue --issue-id ID                   # unlink sub-issue from parent
 
 ### Documents
 get-document --id ID
@@ -67,6 +70,7 @@ download-file --url URL [--output PATH]  # download files uploaded in descriptio
 - save-* with --id updates, without --id creates.
 - --input/--filter follows Linear GraphQL schema (IssueUpdateInput, ProjectFilter, etc.).
 - --filter example: `--filter '{"team":{"name":{"eq":"Backend"}},"priority":{"gte":2}}'`
+- Sub-issues: use --parent-id on create-issue, or add-sub-issue to link/create. get-issue returns parent and children fields.
 - Priority: 0=None 1=Urgent 2=High 3=Normal 4=Low
 - Project state: planned|started|paused|completed|canceled
 - Workflow state type: backlog|unstarted|started|completed|canceled

@@ -9,7 +9,7 @@ Linear API 전체를 하나의 Python 스크립트로 래핑한, AI Agent에 최
 - **OAuth 불필요** — 간단한 API 키만으로 동작
 - **MCP 의존성 없음** — 단일 Python 스크립트로 실행, 별도 서버 불필요
 - **어떤 AI Agent에서든 동작** — 특정 도구에 종속되지 않음. 셸 명령을 실행할 수 있는 Agent라면 바로 사용 가능.
-- **토큰 효율적** — SKILL.md가 34개 커맨드를 ~500 토큰으로 한번에 제공하고, 기본 출력이 compact JSON.
+- **토큰 효율적** — SKILL.md가 37개 커맨드를 ~500 토큰으로 한번에 제공하고, 기본 출력이 compact JSON.
 - **파일 업로드 & 다운로드** — 로컬 파일 업로드 및 이슈 설명/댓글의 파일 다운로드 가능. Linear MCP 서버에는 파일 처리 기능이 없음.
 - **크로스플랫폼** — Windows/macOS/Linux 지원
 
@@ -112,6 +112,9 @@ LINEAR_API_KEY=lin_api_your_key_here
 | `list-issues` | 팀, 상태, 담당자, 라벨, 프로젝트, 우선순위로 이슈 검색/필터 |
 | `create-issue` | 새 이슈 생성 |
 | `update-issue` | 기존 이슈 수정 |
+| `list-sub-issues` | 부모 이슈의 하위 이슈 목록 조회 |
+| `add-sub-issue` | 기존 이슈를 하위 이슈로 연결 |
+| `remove-sub-issue` | 하위 이슈 연결 해제 |
 
 ### 문서
 

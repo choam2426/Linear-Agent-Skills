@@ -9,7 +9,7 @@ Works with any AI coding agent: [Claude Code](https://claude.com/claude-code), [
 - **No OAuth flow** — works with a simple API key
 - **No MCP dependency** — runs as a single Python script, no extra servers
 - **Works with any AI agent** — not locked to a specific tool. Any agent that can run a shell command can use this.
-- **Token efficient** — SKILL.md puts all 34 commands in context at once (~500 tokens), and outputs compact JSON by default.
+- **Token efficient** — SKILL.md puts all 37 commands in context at once (~500 tokens), and outputs compact JSON by default.
 - **File upload & download** — upload local files and download files from issue descriptions/comments. The Linear MCP server has no file handling capabilities.
 - **Cross-platform** — works on Windows/macOS/Linux
 
@@ -112,6 +112,9 @@ Once installed, your AI agent will discover the CLI. Try asking:
 | `list-issues` | Search/filter issues by team, state, assignee, label, project, priority |
 | `create-issue` | Create a new issue |
 | `update-issue` | Update an existing issue |
+| `list-sub-issues` | List child issues of a parent issue |
+| `add-sub-issue` | Link an existing issue as a sub-issue |
+| `remove-sub-issue` | Unlink a sub-issue from its parent |
 
 ### Documents
 

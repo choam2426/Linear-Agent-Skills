@@ -119,6 +119,8 @@ def cmd_get_issue(args, api_key):
         team { name key }
         updatedAt dueDate estimate url
         attachments { nodes { id title url } }
+        parent { id identifier title }
+        children { nodes { id identifier title state { name } priority } }
       }
     }"""
     handle(graphql_request(query, {"id": args.id}, api_key))
@@ -138,6 +140,8 @@ def cmd_list_issues(args, api_key):
         filt["project"] = {"name": {"eq": args.project}}
     if args.priority is not None:
         filt["priority"] = {"eq": args.priority}
+    if args.parent_id:
+        filt["parent"] = {"id": {"eq": args.parent_id}}
 
     query = """query($filter: IssueFilter, $first: Int, $after: String) {
       issues(filter: $filter, first: $first, after: $after, orderBy: updatedAt) {
@@ -172,6 +176,8 @@ def cmd_create_issue(args, api_key):
         inp["projectId"] = args.project_id
     if args.cycle_id:
         inp["cycleId"] = args.cycle_id
+    if args.parent_id:
+        inp["parentId"] = args.parent_id
 
     query = """mutation($input: IssueCreateInput!) {
       issueCreate(input: $input) {
@@ -190,6 +196,42 @@ def cmd_update_issue(args, api_key):
       }
     }"""
     handle(graphql_request(query, {"id": args.id, "input": parse_json(args.input)}, api_key))
+
+
+def cmd_list_sub_issues(args, api_key):
+    query = """query($id: String!) {
+      issue(id: $id) {
+        id identifier title
+        children {
+          nodes {
+            id identifier title
+            state { name } assignee { name }
+            priority team { key } updatedAt
+          }
+        }
+      }
+    }"""
+    handle(graphql_request(query, {"id": args.id}, api_key))
+
+
+def cmd_add_sub_issue(args, api_key):
+    query = """mutation($id: String!, $input: IssueUpdateInput!) {
+      issueUpdate(id: $id, input: $input) {
+        success
+        issue { id identifier title parent { id identifier title } url }
+      }
+    }"""
+    handle(graphql_request(query, {"id": args.issue_id, "input": {"parentId": args.parent_id}}, api_key))
+
+
+def cmd_remove_sub_issue(args, api_key):
+    query = """mutation($id: String!, $input: IssueUpdateInput!) {
+      issueUpdate(id: $id, input: $input) {
+        success
+        issue { id identifier title url }
+      }
+    }"""
+    handle(graphql_request(query, {"id": args.issue_id, "input": {"parentId": None}}, api_key))
 
 
 # --- Documents ---
@@ -816,6 +858,7 @@ def build_parser():
     p.add_argument("--label")
     p.add_argument("--project")
     p.add_argument("--priority", type=int)
+    p.add_argument("--parent-id")
 
     p = sub.add_parser("create-issue")
     p.add_argument("--title", required=True)
@@ -829,10 +872,21 @@ def build_parser():
     p.add_argument("--due-date")
     p.add_argument("--project-id")
     p.add_argument("--cycle-id")
+    p.add_argument("--parent-id")
 
     p = sub.add_parser("update-issue")
     p.add_argument("--id", required=True)
     p.add_argument("--input", required=True)
+
+    p = sub.add_parser("list-sub-issues")
+    p.add_argument("--id", required=True)
+
+    p = sub.add_parser("add-sub-issue")
+    p.add_argument("--parent-id", required=True)
+    p.add_argument("--issue-id", required=True)
+
+    p = sub.add_parser("remove-sub-issue")
+    p.add_argument("--issue-id", required=True)
 
     p = sub.add_parser("get-document")
     p.add_argument("--id", required=True)
@@ -967,6 +1021,9 @@ COMMAND_MAP = {
     "list-issues": cmd_list_issues,
     "create-issue": cmd_create_issue,
     "update-issue": cmd_update_issue,
+    "list-sub-issues": cmd_list_sub_issues,
+    "add-sub-issue": cmd_add_sub_issue,
+    "remove-sub-issue": cmd_remove_sub_issue,
     "get-document": cmd_get_document,
     "list-documents": cmd_list_documents,
     "create-document": cmd_create_document,
