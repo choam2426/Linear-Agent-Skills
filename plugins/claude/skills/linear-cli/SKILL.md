@@ -3,9 +3,11 @@ name: linear-cli
 description: Linear workspace CLI — issues, projects, documents, teams, users, comments, labels, cycles, milestones, attachments.
 ---
 
+SKILL_DIR: This skill directory
+
 ## Usage
-- Windows: `python skills/linear-cli/scripts/linear_cli.py <cmd> [flags]`
-- macOS/Linux: `python3 skills/linear-cli/scripts/linear_cli.py <cmd> [flags]`
+- Windows: `python ${SKILL_DIR}$/scripts/linear_cli.py <cmd> [flags]`
+- macOS/Linux: `python3 ${SKILL_DIR}$/scripts/linear_cli.py <cmd> [flags]`
 
 ## Commands
 
