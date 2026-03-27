@@ -19,7 +19,7 @@ API_URL = "https://api.linear.app/graphql"
 # --- Infrastructure ---
 
 def load_dotenv():
-    path = Path(__file__).resolve().parent
+    path = Path.cwd()
     while path != path.parent:
         env_path = path / ".env"
         if env_path.is_file():
