@@ -1,4 +1,4 @@
-# Linear Agent Skills
+# Linear-CLI
 
 An agent-optimized CLI that wraps the entire Linear API into a single Python script — no OAuth, no MCP, no dependencies.
 
