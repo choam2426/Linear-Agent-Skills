@@ -1,4 +1,4 @@
-# Linear Agent Skills
+# Linear-CLI
 
 Linear API 전체를 하나의 Python 스크립트로 래핑한, AI Agent에 최적화된 CLI입니다. OAuth, MCP, 외부 의존성 없이 동작합니다.
 
@@ -31,26 +31,26 @@ Linear API 전체를 하나의 Python 스크립트로 래핑한, AI Agent에 최
 먼저 마켓플레이스를 등록합니다:
 
 ```
-/plugin marketplace add choam2426/Linear-Agent-Skills
+/plugin marketplace add choam2426/Linear-CLI
 ```
 
 그런 다음 플러그인을 설치합니다:
 
 ```
-/plugin install Linear-Agent-Skills@Linear-Agent-Skills
+/plugin install Linear-CLI@Linear-CLI
 ```
 
 설치 범위를 지정할 수도 있습니다:
 
 ```bash
 # 사용자 범위 (기본값, 모든 프로젝트에서 사용)
-claude plugin install Linear-Agent-Skills@Linear-Agent-Skills
+claude plugin install Linear-CLI@Linear-CLI
 
 # 프로젝트 범위 (팀원과 공유, 버전 관리에 포함)
-claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope project
+claude plugin install Linear-CLI@Linear-CLI --scope project
 
 # 로컬 범위 (gitignore 처리, 나만 사용)
-claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope local
+claude plugin install Linear-CLI@Linear-CLI --scope local
 ```
 
 ### 방법 2: 로컬에서 직접 실행 (Claude Code)
@@ -58,8 +58,8 @@ claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope local
 저장소를 클론한 뒤 플러그인 디렉토리를 지정하여 실행합니다:
 
 ```bash
-git clone https://github.com/choam2426/Linear-Agent-Skills.git
-claude --plugin-dir ./Linear-Agent-Skills
+git clone https://github.com/choam2426/Linear-CLI.git
+claude --plugin-dir ./Linear-CLI
 ```
 
 ### 방법 3: 수동 복사 (모든 AI Agent에서 사용 가능)
@@ -67,8 +67,8 @@ claude --plugin-dir ./Linear-Agent-Skills
 스킬 디렉토리를 프로젝트에 복사합니다. 셸 명령을 실행할 수 있는 AI Agent라면 바로 사용 가능합니다:
 
 ```bash
-git clone https://github.com/choam2426/Linear-Agent-Skills.git
-cp -r Linear-Agent-Skills/plugins/claude/skills/ /path/to/your/project/.claude/skills/
+git clone https://github.com/choam2426/Linear-CLI.git
+cp -r Linear-CLI/plugins/claude/skills/ /path/to/your/project/.claude/skills/
 ```
 
 **Cursor / Windsurf**의 경우, rules 파일에 CLI 경로와 SKILL.md 참조를 추가하세요.

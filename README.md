@@ -31,26 +31,26 @@ Works with any AI coding agent: [Claude Code](https://claude.com/claude-code), [
 First, register the marketplace:
 
 ```
-/plugin marketplace add choam2426/Linear-Agent-Skills
+/plugin marketplace add choam2426/Linear-CLI
 ```
 
 Then install the plugin:
 
 ```
-/plugin install Linear-Agent-Skills@Linear-Agent-Skills
+/plugin install Linear-CLI@Linear-CLI
 ```
 
 You can also specify the installation scope:
 
 ```bash
 # User scope (default, available across all projects)
-claude plugin install Linear-Agent-Skills@Linear-Agent-Skills
+claude plugin install Linear-CLI@Linear-CLI
 
 # Project scope (shared with team, included in version control)
-claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope project
+claude plugin install Linear-CLI@Linear-CLI --scope project
 
 # Local scope (gitignored, only for you)
-claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope local
+claude plugin install Linear-CLI@Linear-CLI --scope local
 ```
 
 ### Option 2: Run locally (Claude Code)
@@ -58,8 +58,8 @@ claude plugin install Linear-Agent-Skills@Linear-Agent-Skills --scope local
 Clone the repo and point Claude Code to the plugin directory:
 
 ```bash
-git clone https://github.com/choam2426/Linear-Agent-Skills.git
-claude --plugin-dir ./Linear-Agent-Skills
+git clone https://github.com/choam2426/Linear-CLI.git
+claude --plugin-dir ./Linear-CLI
 ```
 
 ### Option 3: Manual copy (works with any AI agent)
@@ -67,8 +67,8 @@ claude --plugin-dir ./Linear-Agent-Skills
 Copy the skills directory into your project. Any AI agent that can run shell commands can use it directly:
 
 ```bash
-git clone https://github.com/choam2426/Linear-Agent-Skills.git
-cp -r Linear-Agent-Skills/plugins/claude/skills/ /path/to/your/project/.claude/skills/
+git clone https://github.com/choam2426/Linear-CLI.git
+cp -r Linear-CLI/plugins/claude/skills/ /path/to/your/project/.claude/skills/
 ```
 
 For **Cursor / Windsurf**, add the CLI path and SKILL.md reference to your rules file.
